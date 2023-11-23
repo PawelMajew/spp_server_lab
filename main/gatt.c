@@ -91,17 +91,6 @@ static spp_receive_data_buff_t SppRecvDataBuff = {
     .first_node = NULL
 };
 
-static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_t gatts_if, esp_ble_gatts_cb_param_t *param);
-
-// Array of SPP GATT server profiles with event handler and interface information.
-static struct gatts_profile_inst spp_profile_tab[SPP_PROFILE_NUM] = {
-    [SPP_PROFILE_APP_IDX] = {
-        .gatts_cb = gatts_profile_event_handler,
-        .gatts_if = ESP_GATT_IF_NONE,       /* Not get the gatt_if, so initial is ESP_GATT_IF_NONE */
-    },
-};
-
-
 // Array defining the GATT database for the Serial Port Profile (SPP).
 // Each element corresponds to a specific attribute in the GATT profile,
 // including service declaration, characteristic declaration, and their values.
@@ -160,7 +149,7 @@ static const esp_gatts_attr_db_t spp_gatt_db[SPP_IDX_NB] =
     [SPP_IDX_SPP_STATUS_VAL]                 =
     {{ESP_GATT_AUTO_RSP}, {ESP_UUID_LEN_16, (uint8_t *)&spp_status_uuid, ESP_GATT_PERM_READ,
     SPP_STATUS_MAX_LEN,sizeof(spp_status_val), (uint8_t *)spp_status_val}},
-    
+
 //ZAD_2 add new sevice
 
 //TODO_2
@@ -406,24 +395,32 @@ static void spp_cmd_task(void * arg)
     vTaskDelete(NULL);
 }
 
+///////////////////////////////////////////////////////////////////////////////////
+// GLOBAL FUNCTIONS
+///////////////////////////////////////////////////////////////////////////////////
+
 /**
- * @brief Handles events for the GATT server profile.
+ * @brief Handles GATT server events for the Generic Attribute Profile (GATT) server.
  *
- * This function processes various GATT server events, such as registration,
- * read, write, and connection events, for the Serial Port Profile (SPP).
- * It performs the necessary actions based on the received events.
+ * This function processes GATT server events, such as registration events,
+ * and dispatches the events to the appropriate callback functions.
  *
  * @param[in] event     GATT server callback event.
  * @param[in] gatts_if  GATT interface.
  * @param[in] param     Pointer to the GATT server callback parameters.
  */
-static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_t gatts_if, esp_ble_gatts_cb_param_t *param)
+void gatts_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_t gatts_if, esp_ble_gatts_cb_param_t *param)
 {
     esp_ble_gatts_cb_param_t *p_data = (esp_ble_gatts_cb_param_t *) param;
     uint8_t res = 0xff;
 
     switch (event) {
     	case ESP_GATTS_REG_EVT:
+            if (event == ESP_GATTS_REG_EVT) {
+                if (param->reg.status != ESP_GATT_OK) {
+                    return;
+                }
+            }
         	esp_ble_gap_set_device_name(SAMPLE_DEVICE_NAME);
         	esp_ble_gap_config_adv_data_raw((uint8_t *)spp_adv_data, sizeof(spp_adv_data));
         	esp_ble_gatts_create_attr_tab(spp_gatt_db, gatts_if, SPP_IDX_NB, SPP_SVC_INST_ID);
@@ -488,48 +485,6 @@ static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_
     	}
     	default:
     	    break;
-    }
-}
-
-///////////////////////////////////////////////////////////////////////////////////
-// GLOBAL FUNCTIONS
-///////////////////////////////////////////////////////////////////////////////////
-
-/**
- * @brief Handles GATT server events for the Generic Attribute Profile (GATT) server.
- *
- * This function processes GATT server events, such as registration events,
- * and dispatches the events to the appropriate callback functions.
- *
- * @param[in] event     GATT server callback event.
- * @param[in] gatts_if  GATT interface.
- * @param[in] param     Pointer to the GATT server callback parameters.
- */
-void gatts_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_t gatts_if, esp_ble_gatts_cb_param_t *param)
-{
-    switch (event)
-    {
-    case ESP_GATTS_REG_EVT:
-        if (event == ESP_GATTS_REG_EVT) {
-            if (param->reg.status == ESP_GATT_OK) {
-                spp_profile_tab[SPP_PROFILE_APP_IDX].gatts_if = gatts_if;
-            } else {
-                return;
-            }
-        }
-        break;
-    default:
-        break;
-    }
-
-    int idx;
-    for (idx = 0; idx < SPP_PROFILE_NUM; idx++) {
-        if (gatts_if == ESP_GATT_IF_NONE ||
-                gatts_if == spp_profile_tab[idx].gatts_if) {
-            if (spp_profile_tab[idx].gatts_cb) {
-                spp_profile_tab[idx].gatts_cb(event, gatts_if, param);
-            }
-        }
     }
 }
 

@@ -40,8 +40,7 @@
 #define SPP_DATA_BUFF_MAX_LEN      (2*1024)
 
 #define GATTS_TABLE_TAG  "GATTS_SPP"
-#define SPP_PROFILE_NUM             1
-#define SPP_PROFILE_APP_IDX         0
+
 #define SAMPLE_DEVICE_NAME          "ESP_SPP_SERVER"    //The Device Name Characteristics in GAP
 #define SPP_SVC_INST_ID             0
 #define CHAR_DECLARATION_SIZE   (sizeof(uint8_t))
