@@ -58,6 +58,12 @@ static const uint16_t spp_status_uuid = ESP_GATT_UUID_SPP_COMMAND_NOTIFY;
 static const uint8_t  spp_status_val[10] = {0x00};
 static const uint8_t  spp_status_ccc[2] = {0x00, 0x00};
 
+//ZAD_2 add new sevice value
+
+//TODO_2
+
+///////////////////////////////////  
+
 // Structure defining the advertising parameters for the Serial Port Profile (SPP) service.
 static esp_ble_adv_params_t spp_adv_params = {
     .adv_int_min        = 0x20,
@@ -154,6 +160,12 @@ static const esp_gatts_attr_db_t spp_gatt_db[SPP_IDX_NB] =
     [SPP_IDX_SPP_STATUS_VAL]                 =
     {{ESP_GATT_AUTO_RSP}, {ESP_UUID_LEN_16, (uint8_t *)&spp_status_uuid, ESP_GATT_PERM_READ,
     SPP_STATUS_MAX_LEN,sizeof(spp_status_val), (uint8_t *)spp_status_val}},
+    
+//ZAD_2 add new sevice
+
+//TODO_2
+
+///////////////////////////////////  
 
     //SPP -  status characteristic - Client Characteristic Configuration Descriptor
     [SPP_IDX_SPP_STATUS_CFG]         =

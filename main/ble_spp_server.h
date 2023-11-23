@@ -51,6 +51,11 @@
 #define ESP_GATT_UUID_SPP_COMMAND_RECEIVE   0xABF3
 #define ESP_GATT_UUID_SPP_COMMAND_NOTIFY    0xABF4
 
+//ZAD_2 add new characteristic UUID
+
+//TODO_2
+
+///////////////////////////////////
 /**
  * @brief Structure representing a node in the buffer for received SPP data.
  *
@@ -117,6 +122,11 @@ enum{
 
     SPP_IDX_SPP_STATUS_CHAR,
     SPP_IDX_SPP_STATUS_VAL,
+//ZAD_2 add new indexes
+
+//TODO_2
+
+///////////////////////////////////  
     SPP_IDX_SPP_STATUS_CFG,
     SPP_IDX_NB,
 };
