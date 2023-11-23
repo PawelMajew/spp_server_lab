@@ -38,7 +38,11 @@ static esp_ble_adv_params_t spp_adv_params = {
  * @param[in] event   The specific GAP BLE callback event.
  * @param[in] param   Pointer to the callback parameters containing event-specific data.
  */
- void gap_event_handler(esp_gap_ble_cb_event_t event, esp_ble_gap_cb_param_t *param)
+//ZAD_1
+
+//TODO_1
+
+///////////////////////////////////
 {
     switch (event) {
     case ESP_GAP_BLE_ADV_DATA_RAW_SET_COMPLETE_EVT:

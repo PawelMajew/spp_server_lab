@@ -26,13 +26,25 @@ void app_main(void)
     esp_bt_controller_init(&bt_cfg);
 
     // Turning on the controller in ble mode.
-    esp_bt_controller_enable(ESP_BT_MODE_BLE);
+    //ZAD_1
+    esp_bt_controller_enable(//TODO_1);
+    ///////////////////////////////////
 
     // Init and alloc the resource for bluetooth.
-    esp_bluedroid_init();
+    // https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/bluetooth/esp_bt_main.html
+    //ZAD_1
+
+    //TODO_1
+
+    ///////////////////////////////////
 
     // Enables the BlueDroid Bluetooth stack after it initializes.
-    esp_bluedroid_enable();
+    // https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/bluetooth/esp_bt_main.html
+    //ZAD_1
+
+    //TODO_1
+
+    ///////////////////////////////////
 
     // Registering a function that supports gatt.
     esp_ble_gatts_register_callback(gatts_event_handler);
@@ -40,8 +52,13 @@ void app_main(void)
     // Registers a gap handling function.
     esp_ble_gap_register_callback(gap_event_handler);
 
-    // Gatt application registration.
-    esp_ble_gatts_app_register(ESP_SPP_APP_ID);
+    // Gatt application registration. (arg = ESP_SPP_APP_ID)
+    //https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/bluetooth/esp_gatts.html
+    //ZAD_1
+
+    //TODO_1
+
+    ///////////////////////////////////
 
     // Task initialization SPP.
     spp_task_init();

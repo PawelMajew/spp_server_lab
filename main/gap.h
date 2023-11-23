@@ -24,6 +24,10 @@
  * @param[in] event   The specific GAP BLE callback event.
  * @param[in] param   Pointer to the callback parameters containing event-specific data.
  */
- void gap_event_handler(esp_gap_ble_cb_event_t event, esp_ble_gap_cb_param_t *param);
+ //ZAD_1
+
+//TODO_1
+
+///////////////////////////////////
 
  #endif /* GAP_H */

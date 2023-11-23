@@ -409,13 +409,17 @@ static void spp_cmd_task(void * arg)
  * @param[in] gatts_if  GATT interface.
  * @param[in] param     Pointer to the GATT server callback parameters.
  */
-void gatts_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_t gatts_if, esp_ble_gatts_cb_param_t *param)
+//ZAD_1
+
+//TODO_1
+
+///////////////////////////////////
 {
     esp_ble_gatts_cb_param_t *p_data = (esp_ble_gatts_cb_param_t *) param;
     uint8_t res = 0xff;
 
     switch (event) {
-    	case ESP_GATTS_REG_EVT:
+    	case //TODO_1:
             if (event == ESP_GATTS_REG_EVT) {
                 if (param->reg.status != ESP_GATT_OK) {
                     return;
@@ -425,10 +429,10 @@ void gatts_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_t gatts_if, esp
         	esp_ble_gap_config_adv_data_raw((uint8_t *)spp_adv_data, sizeof(spp_adv_data));
         	esp_ble_gatts_create_attr_tab(spp_gatt_db, gatts_if, SPP_IDX_NB, SPP_SVC_INST_ID);
        	break;
-    	case ESP_GATTS_READ_EVT:
+    	case //TODO_1:
             find_char_and_desr_index(p_data->read.handle);
        	 break;
-    	case ESP_GATTS_WRITE_EVT: {
+    	case //TODO_1: {
     	    res = find_char_and_desr_index(p_data->write.handle);
             if(p_data->write.is_prep == false){
                 if(res == SPP_IDX_SPP_COMMAND_VAL){
@@ -455,28 +459,28 @@ void gatts_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_t gatts_if, esp
             }
       	 	break;
     	}
-    	case ESP_GATTS_EXEC_WRITE_EVT:{
+    	case //TODO_1:{
     	    if(p_data->exec_write.exec_write_flag){
     	        print_write_buffer();
     	        free_write_buffer();
     	    }
     	    break;
     	}
-    	case ESP_GATTS_MTU_EVT:
+    	case //TODO_1:
     	    spp_mtu_size = p_data->mtu.mtu;
     	    break;
-    	case ESP_GATTS_CONNECT_EVT:
+    	case //TODO_1:
     	    spp_conn_id = p_data->connect.conn_id;
     	    spp_gatts_if = gatts_if;
     	    is_connected = true;
     	    memcpy(&spp_remote_bda,&p_data->connect.remote_bda,sizeof(esp_bd_addr_t));
         	break;
-    	case ESP_GATTS_DISCONNECT_EVT:
+    	case //TODO_1:
     	    is_connected = false;
     	    enable_data_ntf = false;
     	    esp_ble_gap_start_advertising(&spp_adv_params);
     	    break;
-    	case ESP_GATTS_CREAT_ATTR_TAB_EVT:{
+    	case //TODO_1:{
     	    if (param->add_attr_tab.num_handle == SPP_IDX_NB && param->add_attr_tab.status == ESP_GATT_OK){
     	        memcpy(spp_handle_table, param->add_attr_tab.handles, sizeof(spp_handle_table));
     	        esp_ble_gatts_start_service(spp_handle_table[SPP_IDX_SVC]);
